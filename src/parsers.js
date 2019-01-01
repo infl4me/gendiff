@@ -18,11 +18,11 @@ const actions = [
   },
 ];
 
-const parseFile = (filePath) => {
+const parseFileToObject = (filePath) => {
   const fileExtension = path.extname(filePath);
   const { action } = actions.find(({ name }) => name === fileExtension);
   const parsedFile = action(fs.readFileSync(filePath, 'utf8'));
   return parsedFile;
 };
 
-export default parseFile;
+export default parseFileToObject;
