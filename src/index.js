@@ -37,7 +37,7 @@ export const render = (file1, file2) => {
 };
 
 const gendiff = (pathFile1, pathFile2) => {
-  const file1 = fs.readFileSync(pathFile1);
+  const file1 = fs.readFileSync(pathFile1, 'utf8');
   const file2 = fs.readFileSync(pathFile2);
   const parsedFile1 = JSON.parse(file1);
   const parsedFile2 = JSON.parse(file2);
