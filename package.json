@@ -1,8 +1,8 @@
 {
   "name": "gendiff11",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Compares two configuration files and shows a difference.",
-  "main": "",
+  "main": "dist/index.js",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
@@ -27,7 +27,8 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -42,7 +43,7 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "^21.27.2",
+    "eslint-plugin-jest": "^22.1.2",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0"
   }
