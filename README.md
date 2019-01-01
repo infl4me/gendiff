@@ -3,3 +3,4 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/79681808bac74c88caff/test_coverage)](https://codeclimate.com/github/infl4me/project-lvl2-s389/test_coverage)
 [![asciicast](https://asciinema.org/a/aT11SBNsNAbaYo32rya1ptg5A.svg)](https://asciinema.org/a/aT11SBNsNAbaYo32rya1ptg5A)
 [![asciicast](https://asciinema.org/a/95B5xcd3lNvWiSXWCkV3zZJXT.svg)](https://asciinema.org/a/95B5xcd3lNvWiSXWCkV3zZJXT)
+[![asciicast](https://asciinema.org/a/IaMZauJqRTthZOmEfL19SB8O4.svg)](https://asciinema.org/a/IaMZauJqRTthZOmEfL19SB8O4)

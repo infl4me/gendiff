@@ -1,5 +1,5 @@
 import { has } from 'lodash';
-import fs from 'fs';
+import parseFileToObject from './parsers';
 
 const buildUnchanged = (key, value) => `  ${key}: ${value}`;
 const buildChanged = (key1, value1, key2, value2) => `- ${key1}: ${value1}\n+ ${key2}: ${value2}`;
@@ -42,11 +42,11 @@ export const render = (file1, file2) => {
   return `{${result}\n}`;
 };
 
+
 const gendiff = (pathFile1, pathFile2) => {
-  const file1 = fs.readFileSync(pathFile1);
-  const file2 = fs.readFileSync(pathFile2);
-  const parsedFile1 = JSON.parse(file1);
-  const parsedFile2 = JSON.parse(file2);
-  return render(parsedFile1, parsedFile2);
+  const file1 = parseFileToObject(pathFile1);
+  const file2 = parseFileToObject(pathFile2);
+
+  return render(file1, file2);
 };
 export default gendiff;
