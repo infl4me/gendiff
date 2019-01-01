@@ -1,6 +1,7 @@
 import fs from 'fs';
-import yaml from 'js-yaml';
 import path from 'path';
+import yaml from 'js-yaml';
+import ini from 'ini';
 
 const extensions = [
   {
@@ -11,12 +12,17 @@ const extensions = [
     name: '.yml',
     action: file => yaml.safeLoad(file),
   },
+  {
+    name: '.ini',
+    action: file => ini.parse(file),
+  },
 ];
 
 const parseFile = (filePath) => {
   const fileExtension = path.extname(filePath);
   const { action } = extensions.find(({ name }) => name === fileExtension);
-  return action(fs.readFileSync(filePath));
+  const parsedFile = action(fs.readFileSync(filePath, 'utf8'));
+  return parsedFile;
 };
 
 export default parseFile;

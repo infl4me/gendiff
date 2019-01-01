@@ -24,6 +24,13 @@ describe('genDiff', () => {
     expect(actual).toBe(expected);
   });
 
+  it('ini', () => {
+    const pathBefore = './__tests__/__fixtures__/before.ini';
+    const pathAfter = './__tests__/__fixtures__/after.ini';
+    const actual = gendiff(pathBefore, pathAfter);
+    expect(actual).toBe(expected);
+  });
+
   it('compare JSON & YAML', () => {
     const pathBefore = './__tests__/__fixtures__/before.yml';
     const pathAfter = './__tests__/__fixtures__/after.json';
