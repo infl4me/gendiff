@@ -9,7 +9,7 @@ const expected = `{
 + verbose: true
 }`;
 
-describe('genDiff', () => {
+describe('gendiff', () => {
   it('json', () => {
     const pathBefore = './__tests__/__fixtures__/before.json';
     const pathAfter = './__tests__/__fixtures__/after.json';
@@ -31,7 +31,7 @@ describe('genDiff', () => {
     expect(actual).toBe(expected);
   });
 
-  it('compare JSON & YAML', () => {
+  it('json & yaml', () => {
     const pathBefore = './__tests__/__fixtures__/before.yml';
     const pathAfter = './__tests__/__fixtures__/after.json';
     const actual = gendiff(pathBefore, pathAfter);

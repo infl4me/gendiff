@@ -3,7 +3,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-const extensions = [
+const actions = [
   {
     name: '.json',
     action: file => JSON.parse(file),
@@ -20,7 +20,7 @@ const extensions = [
 
 const parseFile = (filePath) => {
   const fileExtension = path.extname(filePath);
-  const { action } = extensions.find(({ name }) => name === fileExtension);
+  const { action } = actions.find(({ name }) => name === fileExtension);
   const parsedFile = action(fs.readFileSync(filePath, 'utf8'));
   return parsedFile;
 };
