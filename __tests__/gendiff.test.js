@@ -1,7 +1,4 @@
-// import gendiff from '../src';
-import before from './__fixtures__/before';
-import after from './__fixtures__/after';
-import { render } from '../src';
+import gendiff from '../src';
 
 const expected = `{
   host: hexlet.io
@@ -11,8 +8,19 @@ const expected = `{
 - follow: false
 + verbose: true
 }`;
-const actual = render(before, after);
 
-test('diffJSON', () => {
-  expect(actual).toBe(expected);
+describe('genDiff', () => {
+  it('json', () => {
+    const pathBefore = './__tests__/__fixtures__/before.json';
+    const pathAfter = './__tests__/__fixtures__/after.json';
+    const actual = gendiff(pathBefore, pathAfter);
+    expect(actual).toBe(expected);
+  });
+
+  it('yml', () => {
+    const pathBefore = './__tests__/__fixtures__/before.yml';
+    const pathAfter = './__tests__/__fixtures__/after.yml';
+    const actual = gendiff(pathBefore, pathAfter);
+    expect(actual).toBe(expected);
+  });
 });
