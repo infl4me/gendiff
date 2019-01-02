@@ -1,17 +1,18 @@
 import fs from 'fs';
-import path from 'path';
 import gendiff from '../src';
 
 const defaultPath = './__tests__/__fixtures__/';
-const expected = fs.readFileSync(path.join(defaultPath, 'expected.txt'), 'utf-8');
+const defaultPathBefore = `${defaultPath}before`;
+const defaultPathAfter = `${defaultPath}after`;
+const expected = fs.readFileSync(`${defaultPath}expected.txt`, 'utf-8');
 test.each([
-  ['before.json', 'after.json'],
-  ['before.yml', 'after.yml'],
-  ['before.ini', 'after.ini'],
-  ['before.json', 'after.ini'],
+  ['.json', '.json'],
+  ['.yml', '.yml'],
+  ['.ini', '.ini'],
+  ['.json', '.ini'],
 ])('test %s and %s',
   (before, after) => {
-    const beforePath = path.join(defaultPath, before);
-    const afterPath = path.join(defaultPath, after);
+    const beforePath = `${defaultPathBefore}${before}`;
+    const afterPath = `${defaultPathAfter}${after}`;
     expect(gendiff(beforePath, afterPath)).toBe(expected);
   });
