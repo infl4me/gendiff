@@ -4,32 +4,29 @@ import path from 'path';
 import parseToObject from './parsers';
 
 const buildUnchanged = (key, value) => `  ${key}: ${value}`;
-const buildChanged = (key1, value1, key2, value2) => `- ${key1}: ${value1}\n+ ${key2}: ${value2}`;
+const buildChanged = (key, value1, value2) => `- ${key}: ${value1}\n+ ${key}: ${value2}`;
 const buildDeleted = (key, value) => `- ${key}: ${value}`;
 const buildAdded = (key, value) => `+ ${key}: ${value}`;
 
 const actions = {
   unchanged: {
-    buildNode: (flag, key, obj1) => ({ flag, entry: [key, obj1[key]] }),
     buildStr: ([k, v]) => buildUnchanged(k, v),
     check: (obj1, obj2, key) => obj1[key] === obj2[key],
   },
   changed: {
-    buildNode: (flag, key, obj1, obj2) => ({ flag, entry: [[key, obj1[key]], [key, obj2[key]]] }),
-    buildStr: ([[k1, v1], [k2, v2]]) => buildChanged(k1, v1, k2, v2),
+    buildStr: ([k, v1, v2]) => buildChanged(k, v1, v2),
     check: (obj1, obj2, key) => has(obj1, key) && has(obj2, key),
   },
   deleted: {
-    buildNode: (flag, key, obj1) => ({ flag, entry: [key, obj1[key]] }),
     buildStr: ([k, v]) => buildDeleted(k, v),
     check: (obj1, obj2, key) => has(obj1, key) && !has(obj2, key),
   },
   added: {
-    buildNode: (flag, key, obj1, obj2) => ({ flag, entry: [key, obj2[key]] }),
-    buildStr: ([k, v]) => buildAdded(k, v),
+    buildStr: ([k, , v2]) => buildAdded(k, v2),
     check: (obj1, obj2, key) => !has(obj1, key) && has(obj2, key),
   },
 };
+
 
 const parseToAst = (obj1, obj2) => {
   const keysObj1 = Object.keys(obj1);
@@ -38,7 +35,7 @@ const parseToAst = (obj1, obj2) => {
   const unionKeys = union(keysObj1, keysObj2);
   const result = unionKeys.map((key) => {
     const found = Object.keys(actions).find(action => actions[action].check(obj1, obj2, key));
-    return actions[found].buildNode(found, key, obj1, obj2);
+    return { flag: found, entry: [key, obj1[key], obj2[key]] };
   });
   return result;
 };
