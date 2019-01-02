@@ -1,40 +1,16 @@
+import fs from 'fs';
 import gendiff from '../src';
 
-const expected = `{
-  host: hexlet.io
-- timeout: 50
-+ timeout: 20
-- proxy: 123.234.53.22
-- follow: false
-+ verbose: true
-}`;
-
-describe('gendiff', () => {
-  it('json', () => {
-    const pathBefore = './__tests__/__fixtures__/before.json';
-    const pathAfter = './__tests__/__fixtures__/after.json';
-    const actual = gendiff(pathBefore, pathAfter);
-    expect(actual).toBe(expected);
+const defaultPath = './__tests__/__fixtures__/';
+const expected = fs.readFileSync(`${defaultPath}expected.txt`, 'utf-8');
+test.each([
+  ['before.json', 'after.json'],
+  ['before.yml', 'after.yml'],
+  ['before.ini', 'after.ini'],
+  ['before.json', 'after.ini'],
+])('test %s and %s',
+  (before, after) => {
+    const beforePath = `${defaultPath}${before}`;
+    const afterPath = `${defaultPath}${after}`;
+    expect(gendiff(beforePath, afterPath)).toBe(expected);
   });
-
-  it('yml', () => {
-    const pathBefore = './__tests__/__fixtures__/before.yml';
-    const pathAfter = './__tests__/__fixtures__/after.yml';
-    const actual = gendiff(pathBefore, pathAfter);
-    expect(actual).toBe(expected);
-  });
-
-  it('ini', () => {
-    const pathBefore = './__tests__/__fixtures__/before.ini';
-    const pathAfter = './__tests__/__fixtures__/after.ini';
-    const actual = gendiff(pathBefore, pathAfter);
-    expect(actual).toBe(expected);
-  });
-
-  it('json & yaml', () => {
-    const pathBefore = './__tests__/__fixtures__/before.yml';
-    const pathAfter = './__tests__/__fixtures__/after.json';
-    const actual = gendiff(pathBefore, pathAfter);
-    expect(actual).toBe(expected);
-  });
-});
