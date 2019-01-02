@@ -8,24 +8,27 @@ const buildAdded = (key, value) => `+ ${key}: ${value}`;
 
 const actions = {
   unchanged: {
-    getEntry: (key, value) => [key, value],
     buildStr: ([k, v]) => buildUnchanged(k, v),
     check: (obj, key, value) => has(obj, key) && value === obj[key],
   },
   changed: {
-    getEntry: (key, value1, value2) => [[key, value1], [key, value2]],
     buildStr: ([[k1, v1], [k2, v2]]) => buildChanged(k1, v1, k2, v2),
     check: (obj, key) => has(obj, key),
   },
   deleted: {
-    getEntry: (key, value) => [key, value],
     buildStr: ([k, v]) => buildDeleted(k, v),
     check: (obj, key) => !has(obj, key),
   },
   added: {
-    getEntry: (key, value) => [key, value],
     buildStr: ([k, v]) => buildAdded(k, v),
   },
+};
+
+const buidNode = (flag, values) => {
+  if (flag === 'changed') {
+    return { flag, entry: [...values] };
+  }
+  return { flag, entry: values[0] };
 };
 
 const parseToAst = (obj1, obj2) => {
@@ -34,11 +37,11 @@ const parseToAst = (obj1, obj2) => {
 
   const reduce1 = keysObj1.reduce((acc, key) => {
     const found = Object.keys(actions).find(action => actions[action].check(obj2, key, obj1[key]));
-    return [...acc, { flag: found, entry: actions[found].getEntry(key, obj1[key], obj2[key]) }];
+    return [...acc, buidNode(found, [[key, obj1[key]], [key, obj2[key]]])];
   }, []);
 
   const reduce2 = keysObj2.reduce((acc, key) => (
-    has(obj1, key) ? acc : [...acc, { flag: 'added', entry: [key, obj2[key]] }]
+    has(obj1, key) ? acc : [...acc, buidNode('added', [[key, obj2[key]]])]
   ), reduce1);
 
   return reduce2;
