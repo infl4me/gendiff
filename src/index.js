@@ -33,7 +33,7 @@ const parseToAst = (obj1, obj2) => {
   const keysObj2 = Object.keys(obj2);
 
   const reduce1 = keysObj1.reduce((acc, key) => {
-    const found = Object.keys(actions).find(n => actions[n].check(obj2, key, obj1[key]));
+    const found = Object.keys(actions).find(action => actions[action].check(obj2, key, obj1[key]));
     return [...acc, { flag: found, entry: actions[found].getEntry(key, obj1[key], obj2[key]) }];
   }, []);
 
