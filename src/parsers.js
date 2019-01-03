@@ -9,7 +9,6 @@ const map = {
 
 const parseToObject = (data, dataType) => {
   const parsedData = map[dataType](data);
-  // console.log(parsedData, dataType, '!!!!!!!!!');
   return parsedData;
 };
 
