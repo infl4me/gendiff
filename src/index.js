@@ -53,17 +53,19 @@ const actions = {
 
 const parseToAst = (obj1, obj2) => {
   const unionKeys = union(Object.keys(obj1), Object.keys(obj2));
-  const result = unionKeys.map((key) => {
+  const result = unionKeys.reduce((acc, key) => {
     const flag = Object.keys(actions).find(action => actions[action].check(obj1, obj2, key));
-    return { flag, key, ...actions[flag].getNodeParts(obj1[key], obj2[key], parseToAst) };
-  });
+    return {
+      ...acc, [key]: { flag, ...actions[flag].getNodeParts(obj1[key], obj2[key], parseToAst) },
+    };
+  }, {});
   return result;
 };
-
 const render = (ast) => {
-  const result = ast.reduce((acc, item) => {
-    const { flag } = item;
-    return `${acc}\n${actions[flag].buildStr(item, render)}`;
+  const entries = Object.entries(ast);
+  const result = entries.reduce((acc, [key, value]) => {
+    const { flag } = value;
+    return `${acc}\n${actions[flag].buildStr({ key, ...value }, render)}`;
   }, '');
   return `{${result}\n}`;
 };
