@@ -18,7 +18,7 @@ const addIndentToText = text => (
 const buildNested = (key, children, renderFunction) => (
   addIndentToText(`${key}: ${renderFunction(children)}`)
 );
-const buildUnchanged = (key, value) => `  ${key}: ${value}`;
+const buildUnchanged = (key, value) => `  ${key}: ${stringify(value)}`;
 const buildChanged = (key, value1, value2) => `- ${key}: ${stringify(value1)}\n+ ${key}: ${stringify(value2)}`;
 const buildDeleted = (key, value) => `- ${key}: ${stringify(value)}`;
 const buildAdded = (key, value) => `+ ${key}: ${stringify(value)}`;
