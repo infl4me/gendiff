@@ -12,11 +12,11 @@ const stringify = (value) => {
   return `{\n${result}\n  }`;
 };
 
-const addIndentToStrings = string => (
-  string.split('\n').map(str => `  ${str}`).join('\n')
+const addIndentToText = text => (
+  text.split('\n').map(string => `  ${string}`).join('\n')
 );
-const buildNested = (key, children, f) => (
-  addIndentToStrings(`${key}: ${f(children)}`)
+const buildNested = (key, children, renderFunction) => (
+  addIndentToText(`${key}: ${renderFunction(children)}`)
 );
 const buildUnchanged = (key, value) => `  ${key}: ${value}`;
 const buildChanged = (key, value1, value2) => `- ${key}: ${stringify(value1)}\n+ ${key}: ${stringify(value2)}`;
@@ -25,22 +25,27 @@ const buildAdded = (key, value) => `+ ${key}: ${stringify(value)}`;
 
 const actions = {
   nested: {
-    buildStr: ({ key, children }, func) => buildNested(key, children, func),
+    getNodeParts: (value1, value2, parseFunction) => ({ children: parseFunction(value1, value2) }),
+    buildStr: ({ key, children }, renderFunction) => buildNested(key, children, renderFunction),
     check: (obj1, obj2, key) => typeof obj1[key] === 'object' && typeof obj2[key] === 'object',
   },
   unchanged: {
+    getNodeParts: (oldValue, newValue) => ({ oldValue, newValue }),
     buildStr: ({ key, oldValue }) => buildUnchanged(key, oldValue),
     check: (obj1, obj2, key) => obj1[key] === obj2[key],
   },
   changed: {
+    getNodeParts: (oldValue, newValue) => ({ oldValue, newValue }),
     buildStr: ({ key, oldValue, newValue }) => buildChanged(key, oldValue, newValue),
     check: (obj1, obj2, key) => has(obj1, key) && has(obj2, key),
   },
   deleted: {
+    getNodeParts: (oldValue, newValue) => ({ oldValue, newValue }),
     buildStr: ({ key, oldValue }) => buildDeleted(key, oldValue),
     check: (obj1, obj2, key) => has(obj1, key) && !has(obj2, key),
   },
   added: {
+    getNodeParts: (oldValue, newValue) => ({ oldValue, newValue }),
     buildStr: ({ key, newValue }) => buildAdded(key, newValue),
     check: (obj1, obj2, key) => !has(obj1, key) && has(obj2, key),
   },
@@ -50,12 +55,7 @@ const parseToAst = (obj1, obj2) => {
   const unionKeys = union(Object.keys(obj1), Object.keys(obj2));
   const result = unionKeys.map((key) => {
     const flag = Object.keys(actions).find(action => actions[action].check(obj1, obj2, key));
-    if (flag === 'nested') {
-      return { flag, key, children: parseToAst(obj1[key], obj2[key]) };
-    }
-    return {
-      flag, key, oldValue: obj1[key], newValue: obj2[key],
-    };
+    return { flag, key, ...actions[flag].getNodeParts(obj1[key], obj2[key], parseToAst) };
   });
   return result;
 };

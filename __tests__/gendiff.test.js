@@ -4,11 +4,11 @@ import gendiff from '../src';
 const defaultPath = './__tests__/__fixtures__/';
 
 test.each([
-  ['.json', '.json', 'plain/'],
-  ['.yml', '.yml', 'plain/'],
-  ['.ini', '.ini', 'plain/'],
-  ['.json', '.ini', 'plain/'],
-  ['.yml', '.ini', 'plain/'],
+  ['.json', '.json', 'flat/'],
+  ['.yml', '.yml', 'flat/'],
+  ['.ini', '.ini', 'flat/'],
+  ['.json', '.ini', 'flat/'],
+  ['.yml', '.ini', 'flat/'],
   ['.json', '.json', 'nested/'],
   ['.yml', '.yml', 'nested/'],
   ['.ini', '.ini', 'nested/'],
