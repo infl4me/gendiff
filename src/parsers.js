@@ -2,13 +2,14 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 
 const map = {
-  '.json': data => JSON.parse(data),
-  '.yml': data => yaml.safeLoad(data),
-  '.ini': data => ini.parse(data),
+  '.json': JSON.parse,
+  '.yml': yaml.safeLoad,
+  '.ini': ini.parse,
 };
 
 const parseToObject = (data, dataType) => {
   const parsedData = map[dataType](data);
+  // console.log(parsedData, dataType, '!!!!!!!!!');
   return parsedData;
 };
 
