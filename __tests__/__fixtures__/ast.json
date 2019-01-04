@@ -1,0 +1,85 @@
+{
+  "common": {
+    "flag": "nested",
+    "children": {
+      "setting1": {
+        "flag": "unchanged",
+        "oldValue": "Value 1",
+        "newValue": "Value 1"
+      },
+      "setting2": {
+        "flag": "deleted",
+        "oldValue": "200"
+      },
+      "setting3": {
+        "flag": "changed",
+        "oldValue": true,
+        "newValue": {
+          "key": "value"
+        }
+      },
+      "setting6": {
+        "flag": "nested",
+        "children": {
+          "key": {
+            "flag": "unchanged",
+            "oldValue": "value",
+            "newValue": "value"
+          },
+          "ops": {
+            "flag": "added",
+            "newValue": "vops"
+          }
+        }
+      },
+      "follow": {
+        "flag": "added",
+        "newValue": false
+      },
+      "setting4": {
+        "flag": "added",
+        "newValue": "blah blah"
+      },
+      "setting5": {
+        "flag": "added",
+        "newValue": {
+          "key5": "value5"
+        }
+      }
+    }
+  },
+  "group1": {
+    "flag": "nested",
+    "children": {
+      "baz": {
+        "flag": "changed",
+        "oldValue": "bas",
+        "newValue": "bars"
+      },
+      "foo": {
+        "flag": "unchanged",
+        "oldValue": "bar",
+        "newValue": "bar"
+      },
+      "nest": {
+        "flag": "changed",
+        "oldValue": {
+          "key": "value"
+        },
+        "newValue": "str"
+      }
+    }
+  },
+  "group2": {
+    "flag": "deleted",
+    "oldValue": {
+      "abc": "12345"
+    }
+  },
+  "group3": {
+    "flag": "added",
+    "newValue": {
+      "fee": "100500"
+    }
+  }
+}
