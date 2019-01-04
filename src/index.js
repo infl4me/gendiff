@@ -4,6 +4,7 @@ import path from 'path';
 import parseToObject from './parsers';
 import renderPlain from './renderPlain';
 import renderTree from './renderTree';
+import renderJson from './renderJson';
 
 export const actions = {
   nested: {
@@ -20,11 +21,11 @@ export const actions = {
     check: (obj1, obj2, key) => has(obj1, key) && has(obj2, key),
   },
   deleted: {
-    getNodeParts: (oldValue, newValue) => ({ oldValue, newValue }),
+    getNodeParts: oldValue => ({ oldValue }),
     check: (obj1, obj2, key) => has(obj1, key) && !has(obj2, key),
   },
   added: {
-    getNodeParts: (oldValue, newValue) => ({ oldValue, newValue }),
+    getNodeParts: (oldValue, newValue) => ({ newValue }),
     check: (obj1, obj2, key) => !has(obj1, key) && has(obj2, key),
   },
 };
@@ -43,6 +44,7 @@ const parseToAst = (obj1, obj2) => {
 const formatTypes = {
   tree: renderTree,
   plain: renderPlain,
+  json: renderJson,
 };
 
 const gendiff = (pathToFile1, pathToFile2, formatType) => {

@@ -4,16 +4,24 @@ import gendiff from '../src';
 const defaultPath = './__tests__/__fixtures__/';
 
 test.each([
-  ['.json', '.json', 'flat/', 'tree'],
+  ['.json', '.json', 'flat/', 'json'],
   ['.yml', '.yml', 'flat/', 'tree'],
   ['.ini', '.ini', 'flat/', 'plain'],
   ['.json', '.ini', 'flat/', 'plain'],
   ['.yml', '.ini', 'flat/', 'plain'],
-  ['.json', '.json', 'nested/', 'tree'],
-  ['.yml', '.yml', 'nested/', 'tree'],
+  ['.json', '.json', 'nested/', 'json'],
+  ['.yml', '.yml', 'nested/', 'json'],
   ['.ini', '.ini', 'nested/', 'plain'],
   ['.json', '.ini', 'nested/', 'plain'],
   ['.yml', '.ini', 'nested/', 'plain'],
+  ['.yml', '.yml', 'nested/', 'json'],
+  ['.ini', '.ini', 'nested/', 'json'],
+  ['.json', '.ini', 'nested/', 'json'],
+  ['.json', '.json', 'nested/', 'json'],
+  ['.yml', '.yml', 'flat/', 'json'],
+  ['.ini', '.ini', 'flat/', 'json'],
+  ['.json', '.ini', 'flat/', 'json'],
+  ['.json', '.json', 'flat/', 'json'],
 ])('test before%s and after%s %s %s',
   (before, after, dataType, formatType) => {
     const beforePath = `${defaultPath}${dataType}before${before}`;
