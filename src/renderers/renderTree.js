@@ -1,5 +1,5 @@
 const indent = ' ';
-const calcIndent = (count, fn) => indent.repeat(fn(count));
+const calcIndent = (counter, fn) => indent.repeat(fn(counter));
 const skipFirstDepth = depth => (depth - 1) * 2;
 
 const stringify = (value, depth) => {
