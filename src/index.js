@@ -1,8 +1,8 @@
-import { has, union } from 'lodash';
+import { has, union, flatten } from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parseToObject from './parsers';
-import { renderJson, renderTree, renderPlain } from './renderersFacade';
+import { renderJson, renderTree, renderPlain } from './renderers';
 
 export const actions = {
   nested: {
@@ -30,12 +30,10 @@ export const actions = {
 
 const parseToAst = (obj1, obj2) => {
   const unionKeys = union(Object.keys(obj1), Object.keys(obj2));
-  const result = unionKeys.reduce((acc, key) => {
-    const flag = Object.keys(actions).find(action => actions[action].check(obj1, obj2, key));
-    return {
-      ...acc, [key]: { flag, ...actions[flag].getNodeParts(obj1[key], obj2[key], parseToAst) },
-    };
-  }, {});
+  const result = unionKeys.map((key) => {
+    const type = Object.keys(actions).find(action => actions[action].check(obj1, obj2, key));
+    return { name: key, type, ...actions[type].getNodeParts(obj1[key], obj2[key], parseToAst) };
+  });
   return result;
 };
 

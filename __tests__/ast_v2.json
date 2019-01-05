@@ -1,0 +1,81 @@
+[{
+	"name": "common",
+	"flag": "nested",
+	"children": [{
+		"name": "setting1",
+		"flag": "unchanged",
+		"oldValue": "Value 1",
+		"newValue": "Value 1"
+	}, {
+		"name": "setting2",
+		"flag": "deleted",
+		"oldValue": "200"
+	}, {
+		"name": "setting3",
+		"flag": "changed",
+		"oldValue": true,
+		"newValue": {
+			"key": "value"
+		}
+	}, {
+		"name": "setting6",
+		"flag": "nested",
+		"children": [{
+			"name": "key",
+			"flag": "unchanged",
+			"oldValue": "value",
+			"newValue": "value"
+		}, {
+			"name": "ops",
+			"flag": "added",
+			"newValue": "vops"
+		}]
+	}, {
+		"name": "follow",
+		"flag": "added",
+		"newValue": false
+	}, {
+		"name": "setting4",
+		"flag": "added",
+		"newValue": "blah blah"
+	}, {
+		"name": "setting5",
+		"flag": "added",
+		"newValue": {
+			"key5": "value5"
+		}
+	}]
+}, {
+	"name": "group1",
+	"flag": "nested",
+	"children": [{
+		"name": "baz",
+		"flag": "changed",
+		"oldValue": "bas",
+		"newValue": "bars"
+	}, {
+		"name": "foo",
+		"flag": "unchanged",
+		"oldValue": "bar",
+		"newValue": "bar"
+	}, {
+		"name": "nest",
+		"flag": "changed",
+		"oldValue": {
+			"key": "value"
+		},
+		"newValue": "str"
+	}]
+}, {
+	"name": "group2",
+	"flag": "deleted",
+	"oldValue": {
+		"abc": "12345"
+	}
+}, {
+	"name": "group3",
+	"flag": "added",
+	"newValue": {
+		"fee": "100500"
+	}
+}]

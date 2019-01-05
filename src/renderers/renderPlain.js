@@ -19,11 +19,11 @@ const actions = {
 };
 
 const render = (ast, ancestry = []) => {
-  const entries = Object.entries(ast);
-  const result = entries.reduce((acc, [key, node]) => {
-    const newAncestry = [...ancestry, key];
-    const { flag } = node;
-    const buildedString = actions[flag](node, newAncestry, render);
+  // console.log(JSON.stringify(ast));
+  const result = ast.reduce((acc, node) => {
+    const { name, type } = node;
+    const newAncestry = [...ancestry, name];
+    const buildedString = actions[type](node, newAncestry, render);
     return buildedString ? [...acc, buildedString] : acc;
   }, []);
   return result.join('\n');
