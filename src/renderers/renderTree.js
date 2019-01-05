@@ -14,7 +14,6 @@ const stringify = (value, depth) => {
 };
 
 const buildNested = (key, children, depth, renderFunction) => `${calcIndent(depth, d => d * 2)}${key}: ${renderFunction(children, depth + 1)}`;
-
 const buildUnchanged = (key, oldValue, depth) => `${calcIndent(depth, skipFirstDepth)}  ${key}: ${stringify(oldValue, depth)}`;
 const buildChanged = (key, oldValue, newValue, depth) => (
   [`${calcIndent(depth, skipFirstDepth)}- ${key}: ${stringify(oldValue, depth)}`, `${calcIndent(depth, skipFirstDepth)}+ ${key}: ${stringify(newValue, depth)}`]);
@@ -30,13 +29,6 @@ const actions = {
   added: ({ name, newValue }, depth) => buildAdded(name, newValue, depth),
 };
 
-// const render = (ast, depth = 1) => {
-//   const result = ast.reduce((acc, node) => {
-//     const { type } = node;
-//     return [...acc, actions[type](node, depth, render)];
-//   }, []);
-//   return `{\n${result.join('\n')}\n${calcIndent(depth, skipFirstDepth)}}`;
-// };
 const render = (ast, depth = 1) => {
   const result = ast.map((node) => {
     const { type } = node;
@@ -46,14 +38,3 @@ const render = (ast, depth = 1) => {
 };
 
 export default render;
-// const addIndentToEachLineInText = text => (
-//   text.split('\n').map(line => `  ${line}`).join('\n')
-// );
-// const render = (ast) => {
-//   const entries = Object.entries(ast);
-//   const result = entries.reduce((acc, [key, node]) => {
-//     const { flag } = node;
-//     return `${acc}\n${actions[flag]({ key, ...node }, render)}`;
-//   }, '');
-//   return `{${result}\n}`;
-// };

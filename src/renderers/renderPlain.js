@@ -19,7 +19,6 @@ const actions = {
 };
 
 const render = (ast, ancestry = []) => {
-  // console.log(JSON.stringify(ast));
   const result = ast.reduce((acc, node) => {
     const { name, type } = node;
     const newAncestry = [...ancestry, name];
