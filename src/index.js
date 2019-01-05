@@ -2,9 +2,7 @@ import { has, union } from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parseToObject from './parsers';
-import renderPlain from './renderPlain';
-import renderTree from './renderTree';
-import renderJson from './renderJson';
+import { renderJson, renderTree, renderPlain } from './renderersFacade';
 
 export const actions = {
   nested: {

@@ -5,7 +5,13 @@ const defaultPath = './__tests__/__fixtures__/';
 
 test.each([
   ['.json', '.json', 'flat/', 'json'],
-  ['.yml', '.yml', 'flat/', 'tree'],
+  ['.ini', '.yml', 'flat/', 'tree'],
+  ['.json', '.ini', 'flat/', 'tree'],
+  ['.yml', '.json', 'flat/', 'tree'],
+  ['.ini', '.yml', 'nested/', 'tree'],
+  ['.json', '.ini', 'nested/', 'tree'],
+  ['.yml', '.json', 'nested/', 'tree'],
+  ['.json', '.json', 'nested/', 'tree'],
   ['.ini', '.ini', 'flat/', 'plain'],
   ['.json', '.ini', 'flat/', 'plain'],
   ['.yml', '.ini', 'flat/', 'plain'],

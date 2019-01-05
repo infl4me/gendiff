@@ -19,5 +19,5 @@ extends:
   - 'airbnb-base'
   - 'plugin:jest/recommended'
 
-# rules:
-  # no-console: 0
+rules:
+  no-console: 0
