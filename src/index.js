@@ -1,4 +1,4 @@
-import { has, union, flatten } from 'lodash';
+import { has, union } from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parseToObject from './parsers';
