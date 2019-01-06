@@ -11,6 +11,7 @@ const stringify = (value) => {
 const buildChanged = (ancestry, oldValue, newValue) => [`Property '${ancestry}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`];
 const buildDeleted = ancestry => [`Property '${ancestry}' was removed`];
 const buildAdded = (ancestry, newValue) => [`Property '${ancestry}' was added with value: ${stringify(newValue)}`];
+
 const joinStr = (str, delimiter) => `${str}${delimiter}`;
 const actions = {
   nested: ({ children }, ancestry, fn) => fn(children, joinStr(ancestry, '.')),
