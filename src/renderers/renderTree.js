@@ -1,7 +1,12 @@
 import { flatten } from 'lodash';
 
-const calcIndent = (depth, indentSize, initialDepth = 1) => (
-  '  '.repeat((depth - initialDepth + 1) + (indentSize / 2 - 1)));
+const calcIndent = (currentDepth, initialIndent, startingDepth = 0) => {
+  if (currentDepth < startingDepth) {
+    return '';
+  }
+  const normalizer = startingDepth ? startingDepth - 1 : 0;
+  return '  '.repeat((currentDepth - (normalizer)) + (initialIndent / 2 - 1));
+};
 
 const stringify = (value, depth) => {
   if (typeof value !== 'object') {
