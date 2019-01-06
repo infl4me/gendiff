@@ -11,6 +11,9 @@ build:
 test:
 	npm test
 
+testwatch:
+	npm run testWatch
+
 lint:
 	npx eslint .
 

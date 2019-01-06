@@ -1,24 +1,25 @@
 import { flatten } from 'lodash';
 
-const indent = ' ';
-const calcIndent = (counter, fn) => indent.repeat(fn(counter));
-const skipFirstDepth = depth => (depth - 1) * 2;
+const indent = '  ';
+
+const calcIndent = (depth, startFrom = 2) => (
+  indent.repeat(depth + (startFrom <= -1 ? -1 : startFrom / 2 - 1)));
 
 const stringify = (value, depth) => {
   if (typeof value !== 'object') {
     return value;
   }
   const keys = Object.keys(value);
-  const result = keys.reduce((acc, key) => `${acc}${calcIndent(depth, d => d * 2 + 2)}${key}: ${value[key]}`, '');
-  return `{\n${result}\n${calcIndent(depth, d => d * 2)}}`;
+  const result = keys.reduce((acc, key) => `${acc}${calcIndent(depth, 4)}${key}: ${value[key]}`, '');
+  return `{\n${result}\n${calcIndent(depth)}}`;
 };
 
-const buildNested = (key, children, depth, renderFunction) => `${calcIndent(depth, d => d * 2)}${key}: ${renderFunction(children, depth + 1)}`;
-const buildUnchanged = (key, oldValue, depth) => `${calcIndent(depth, skipFirstDepth)}  ${key}: ${stringify(oldValue, depth)}`;
+const buildNested = (key, children, depth, renderFunction) => `${calcIndent(depth)}${key}: ${renderFunction(children, depth + 1)}`;
+const buildUnchanged = (key, oldValue, depth) => `${calcIndent(depth, -1)}  ${key}: ${stringify(oldValue, depth)}`;
 const buildChanged = (key, oldValue, newValue, depth) => (
-  [`${calcIndent(depth, skipFirstDepth)}- ${key}: ${stringify(oldValue, depth)}`, `${calcIndent(depth, skipFirstDepth)}+ ${key}: ${stringify(newValue, depth)}`]);
-const buildDeleted = (key, oldValue, depth) => `${calcIndent(depth, skipFirstDepth)}- ${key}: ${stringify(oldValue, depth)}`;
-const buildAdded = (key, newValue, depth) => `${calcIndent(depth, skipFirstDepth)}+ ${key}: ${stringify(newValue, depth)}`;
+  [`${calcIndent(depth, -1)}- ${key}: ${stringify(oldValue, depth)}`, `${calcIndent(depth, -1)}+ ${key}: ${stringify(newValue, depth)}`]);
+const buildDeleted = (key, oldValue, depth) => `${calcIndent(depth, -1)}- ${key}: ${stringify(oldValue, depth)}`;
+const buildAdded = (key, newValue, depth) => `${calcIndent(depth, -1)}+ ${key}: ${stringify(newValue, depth)}`;
 
 const actions = {
   nested: ({ name, children }, depth, renderFunction) => (
@@ -34,7 +35,7 @@ const render = (ast, depth = 1) => {
     const { type } = node;
     return actions[type](node, depth, render);
   });
-  return `{\n${flatten(result).join('\n')}\n${calcIndent(depth, skipFirstDepth)}}`;
+  return `{\n${flatten(result).join('\n')}\n${calcIndent(depth, -1)}}`;
 };
 
 export default render;
