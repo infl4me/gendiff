@@ -2,7 +2,7 @@ import { has, union } from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parseToObject from './parsers';
-import { renderJson, renderTree, renderPlain } from './renderers';
+import getFormat from './renderers';
 
 export const actions = {
   nested: {
@@ -23,7 +23,7 @@ export const actions = {
     check: (obj1, obj2, key) => has(obj1, key) && !has(obj2, key),
   },
   added: {
-    getNodeParts: (oldValue, newValue) => ({ newValue }),
+    getNodeParts: (_oldValue, newValue) => ({ newValue }),
     check: (obj1, obj2, key) => !has(obj1, key) && has(obj2, key),
   },
 };
@@ -37,12 +37,6 @@ const parseToAst = (obj1, obj2) => {
   return result;
 };
 
-const formatTypes = {
-  tree: renderTree,
-  plain: renderPlain,
-  json: renderJson,
-};
-
 const gendiff = (pathToFile1, pathToFile2, formatType) => {
   const file1Extension = path.extname(pathToFile1);
   const file2Extension = path.extname(pathToFile2);
@@ -50,7 +44,7 @@ const gendiff = (pathToFile1, pathToFile2, formatType) => {
   const file2Content = fs.readFileSync(pathToFile2, 'utf8');
   const obj1 = parseToObject(file1Content, file1Extension);
   const obj2 = parseToObject(file2Content, file2Extension);
-  return formatTypes[formatType](parseToAst(obj1, obj2));
+  return getFormat(formatType)(parseToAst(obj1, obj2));
 };
 
 export default gendiff;

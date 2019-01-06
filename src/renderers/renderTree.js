@@ -1,44 +1,43 @@
 import { flatten } from 'lodash';
 
-const calcIndent = (currentDepth, initialIndent, startingDepth = 0) => {
-  if (currentDepth < startingDepth) {
-    return '';
-  }
-  const normalizer = startingDepth ? startingDepth - 1 : 0;
-  return '  '.repeat((currentDepth - (normalizer)) + (initialIndent / 2 - 1));
-};
-
 const stringify = (value, depth) => {
   if (typeof value !== 'object') {
     return value;
   }
   const keys = Object.keys(value);
-  const result = keys.reduce((acc, key) => `${acc}${calcIndent(depth, 4)}${key}: ${value[key]}`, '');
-  return `{\n${result}\n${calcIndent(depth, 2)}}`;
+  const result = keys.reduce((acc, key) => `${acc}${'  '.repeat(depth + 2)}${key}: ${value[key]}`, '');
+  return `{\n${result}\n${'  '.repeat(depth + 1)}}`;
 };
 
-const buildNested = (key, children, depth, renderFunction) => `${calcIndent(depth, 2)}${key}: ${renderFunction(children, depth + 1)}`;
-const buildUnchanged = (key, oldValue, depth) => `${calcIndent(depth, 2, 2)}  ${key}: ${stringify(oldValue, depth)}`;
-const buildChanged = (key, oldValue, newValue, depth) => (
-  [`${calcIndent(depth, 2, 2)}- ${key}: ${stringify(oldValue, depth)}`, `${calcIndent(depth, 2, 2)}+ ${key}: ${stringify(newValue, depth)}`]);
-const buildDeleted = (key, oldValue, depth) => `${calcIndent(depth, 2, 2)}- ${key}: ${stringify(oldValue, depth)}`;
-const buildAdded = (key, newValue, depth) => `${calcIndent(depth, 2, 2)}+ ${key}: ${stringify(newValue, depth)}`;
+const buildNested = (key, children, depth, renderFunction) => `  ${key}: ${renderFunction(children, depth + 1)}`;
+const buildUnchanged = (key, oldValue) => `  ${key}: ${oldValue}`;
+const buildChanged = (key, oldValue, newValue) => (
+  [`- ${key}: ${oldValue}`, `+ ${key}: ${newValue}`]);
+const buildDeleted = (key, oldValue) => `- ${key}: ${oldValue}`;
+const buildAdded = (key, newValue) => `+ ${key}: ${newValue}`;
 
 const actions = {
   nested: ({ name, children }, depth, renderFunction) => (
     buildNested(name, children, depth, renderFunction)),
-  unchanged: ({ name, oldValue }, depth) => buildUnchanged(name, oldValue, depth),
-  changed: ({ name, oldValue, newValue }, depth) => buildChanged(name, oldValue, newValue, depth),
-  deleted: ({ name, oldValue }, depth) => buildDeleted(name, oldValue, depth),
-  added: ({ name, newValue }, depth) => buildAdded(name, newValue, depth),
+  unchanged: ({ name, oldValue }) => buildUnchanged(name, oldValue),
+  changed: ({ name, oldValue, newValue }) => buildChanged(name, oldValue, newValue),
+  deleted: ({ name, oldValue }) => buildDeleted(name, oldValue),
+  added: ({ name, newValue }) => buildAdded(name, newValue),
 };
 
-const render = (ast, depth = 1) => {
-  const result = ast.map((node) => {
-    const { type } = node;
-    return actions[type](node, depth, render);
+const render = (ast, depth = 0) => {
+  const strings = ast.map((node) => {
+    const { type, oldValue, newValue } = node;
+    return actions[type](
+      {
+        ...node,
+        oldValue: stringify(oldValue, depth),
+        newValue: stringify(newValue, depth),
+      }, depth, render,
+    );
   });
-  return `{\n${flatten(result).join('\n')}\n${calcIndent(depth, 2, 2)}}`;
+  const indentedStrings = flatten(strings).map(string => `${'  '.repeat(depth)}${string}`);
+  return `{\n${indentedStrings.join('\n')}\n${'  '.repeat(depth)}}`;
 };
 
 export default render;
