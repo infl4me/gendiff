@@ -5,8 +5,8 @@ const stringify = (value) => {
     return '[complex value]';
   }
   if (typeof value === 'string') {
-    const isStringContainsNumber = !isNaN(toNumber(value));
-    return isStringContainsNumber ? value : `'${value}'`;
+    const isStringContainNumber = !isNaN(toNumber(value));
+    return isStringContainNumber ? value : `'${value}'`;
   }
   return value;
 };
