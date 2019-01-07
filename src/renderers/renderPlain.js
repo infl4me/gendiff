@@ -1,16 +1,17 @@
-import { flatten } from 'lodash';
+import { flatten, isNaN, toNumber } from 'lodash';
 
 const stringify = (value) => {
   if (typeof value === 'boolean') return value;
   if (typeof value === 'object') {
     return '[complex value]';
   }
-  return Number.isNaN(Number(value)) ? `'${value}'` : value;
+  const canBeNumber = !isNaN(toNumber(value));
+  return canBeNumber ? value : `'${value}'`;
 };
 
-const buildChanged = (ancestry, oldValue, newValue) => [`Property '${ancestry}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`];
-const buildDeleted = ancestry => [`Property '${ancestry}' was removed`];
-const buildAdded = (ancestry, newValue) => [`Property '${ancestry}' was added with value: ${stringify(newValue)}`];
+const buildChanged = (ancestry, oldValue, newValue) => `Property '${ancestry}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
+const buildDeleted = ancestry => `Property '${ancestry}' was removed`;
+const buildAdded = (ancestry, newValue) => `Property '${ancestry}' was added with value: ${stringify(newValue)}`;
 
 const joinStr = (str, delimiter) => `${str}${delimiter}`;
 const actions = {
