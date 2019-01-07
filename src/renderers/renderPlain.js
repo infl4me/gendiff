@@ -1,12 +1,14 @@
 import { isNaN, toNumber } from 'lodash';
 
 const stringify = (value) => {
-  if (typeof value === 'boolean') return value;
-  if (typeof value === 'object') {
+  if (value instanceof Object) {
     return '[complex value]';
   }
-  const isValueContainsNumber = !isNaN(toNumber(value));
-  return isValueContainsNumber ? value : `'${value}'`;
+  if (typeof value === 'string') {
+    const isStringContainsNumber = !isNaN(toNumber(value));
+    return isStringContainsNumber ? value : `'${value}'`;
+  }
+  return value;
 };
 
 const actions = {
