@@ -5,8 +5,8 @@ const stringify = (value) => {
   if (typeof value === 'object') {
     return '[complex value]';
   }
-  const canBeNumber = !isNaN(toNumber(value));
-  return canBeNumber ? value : `'${value}'`;
+  const isStringContainsNumber = !isNaN(toNumber(value));
+  return isStringContainsNumber ? value : `'${value}'`;
 };
 
 const buildChanged = (ancestry, oldValue, newValue) => `Property '${ancestry}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
@@ -21,15 +21,6 @@ const actions = {
   deleted: (_a, ancestry) => buildDeleted(ancestry),
   added: ({ newValue }, ancestry) => buildAdded(ancestry, newValue),
 };
-
-// const render = (ast, ancestry = '') => {
-//   const result = ast.map((node) => {
-//     const { name, type } = node;
-//     const newAncestry = `${ancestry}${name}`;
-//     return actions[type](node, newAncestry, render);
-//   });
-//   return flatten(result).join('\n');
-// };
 
 const render = (ast, ancestry = '') => {
   const result = ast.reduce((acc, node) => {
