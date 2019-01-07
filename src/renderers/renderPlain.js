@@ -5,8 +5,8 @@ const stringify = (value) => {
   if (typeof value === 'object') {
     return '[complex value]';
   }
-  const isContainsNumber = !isNaN(toNumber(value));
-  return isContainsNumber ? value : `'${value}'`;
+  const isValueContainsNumber = !isNaN(toNumber(value));
+  return isValueContainsNumber ? value : `'${value}'`;
 };
 
 const actions = {
