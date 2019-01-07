@@ -5,8 +5,8 @@ const stringify = (value) => {
     return '[complex value]';
   }
   if (typeof value === 'string') {
-    const isStringContainNumber = !isNaN(toNumber(value));
-    return isStringContainNumber ? value : `'${value}'`;
+    const canConvertToNumber = !isNaN(toNumber(value));
+    return canConvertToNumber ? value : `'${value}'`;
   }
   return value;
 };
@@ -20,14 +20,22 @@ const actions = {
 };
 
 const render = (ast, ancestry = '') => {
-  const result = ast.reduce((acc, node) => {
+  const result = ast.map((node) => {
     const { name, type } = node;
     const newAncestry = `${ancestry}${name}`;
-    const buildedString = actions[type](node, newAncestry, render);
-    return buildedString ? [...acc, buildedString] : acc;
-  }, []);
-
-  return result.join('\n');
+    return actions[type](node, newAncestry, render);
+  });
+  return result.filter(v => v).join('\n');
 };
 
+// const render = (ast, ancestry = '') => {
+//   const result = ast.reduce((acc, node) => {
+//     const { name, type } = node;
+//     const newAncestry = `${ancestry}${name}`;
+//     const buildedString = actions[type](node, newAncestry, render);
+//     return buildedString ? [...acc, buildedString] : acc;
+//   }, []);
+
+//   return result.join('\n');
+// };
 export default render;
