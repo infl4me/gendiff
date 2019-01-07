@@ -28,14 +28,4 @@ const render = (ast, ancestry = '') => {
   return result.filter(v => v).join('\n');
 };
 
-// const render = (ast, ancestry = '') => {
-//   const result = ast.reduce((acc, node) => {
-//     const { name, type } = node;
-//     const newAncestry = `${ancestry}${name}`;
-//     const buildedString = actions[type](node, newAncestry, render);
-//     return buildedString ? [...acc, buildedString] : acc;
-//   }, []);
-
-//   return result.join('\n');
-// };
 export default render;
