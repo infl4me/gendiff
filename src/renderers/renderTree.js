@@ -9,20 +9,12 @@ const stringify = (value, depth) => {
   return `{\n${result}\n${'  '.repeat(depth + 1)}}`;
 };
 
-const buildNested = (key, children, depth, renderFunction) => `  ${key}: ${renderFunction(children, depth + 1)}`;
-const buildUnchanged = (key, oldValue) => `  ${key}: ${oldValue}`;
-const buildChanged = (key, oldValue, newValue) => (
-  [`- ${key}: ${oldValue}`, `+ ${key}: ${newValue}`]);
-const buildDeleted = (key, oldValue) => `- ${key}: ${oldValue}`;
-const buildAdded = (key, newValue) => `+ ${key}: ${newValue}`;
-
 const actions = {
-  nested: ({ name, children }, depth, renderFunction) => (
-    buildNested(name, children, depth, renderFunction)),
-  unchanged: ({ name, oldValue }) => buildUnchanged(name, oldValue),
-  changed: ({ name, oldValue, newValue }) => buildChanged(name, oldValue, newValue),
-  deleted: ({ name, oldValue }) => buildDeleted(name, oldValue),
-  added: ({ name, newValue }) => buildAdded(name, newValue),
+  nested: ({ name, children }, depth, renderFunction) => (`  ${name}: ${renderFunction(children, depth + 1)}`),
+  unchanged: ({ name, oldValue }) => `  ${name}: ${oldValue}`,
+  changed: ({ name, oldValue, newValue }) => [`- ${name}: ${oldValue}`, `+ ${name}: ${newValue}`],
+  deleted: ({ name, oldValue }) => `- ${name}: ${oldValue}`,
+  added: ({ name, newValue }) => `+ ${name}: ${newValue}`,
 };
 
 const render = (ast, depth = 0) => {
