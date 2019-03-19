@@ -1,5 +1,2 @@
-[![Build Status](https://travis-ci.org/infl4me/project-lvl2-s389.svg?branch=master)](https://travis-ci.org/infl4me/project-lvl2-s389)
+[![Build Status](https://travis-ci.org/infl4me/gendiff.svg?branch=master)](https://travis-ci.org/infl4me/project-lvl2-s389)
 [![Maintainability](https://api.codeclimate.com/v1/badges/79681808bac74c88caff/maintainability)](https://codeclimate.com/github/infl4me/project-lvl2-s389/maintainability)
-[![asciicast](https://asciinema.org/a/7Yhpyuo8kVvGWfV4FuzkYzNoK.svg)](https://asciinema.org/a/7Yhpyuo8kVvGWfV4FuzkYzNoK)
-[![asciicast](https://asciinema.org/a/VElh58zxd8DMylO5eqofYN4sK.svg)](https://asciinema.org/a/VElh58zxd8DMylO5eqofYN4sK)
-[![asciicast](https://asciinema.org/a/fotH1WGDJR4hjXdV8wpiZGnNY.svg)](https://asciinema.org/a/fotH1WGDJR4hjXdV8wpiZGnNY)
